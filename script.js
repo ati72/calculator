@@ -22,3 +22,12 @@ function operate(operator, a, b) {
         case '/': return divide(a, b);
     }
 }
+
+const display = document.querySelector('.display');
+const btnNumbers = document.querySelectorAll('.number');
+const btnOperators = document.querySelectorAll('.operator');
+const btnEquals = document.querySelector('.equals');
+const btnClear = document.querySelector('.clear');
+
+btnNumbers.forEach(btn => btn.addEventListener('click', () => display.innerHTML += btn.innerHTML));
+btnClear.addEventListener('click', () => display.innerHTML = '');
