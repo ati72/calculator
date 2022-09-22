@@ -67,6 +67,7 @@ btnOperators.forEach(btn => btn.addEventListener('click', () => {
     if(operator !== null) {
         previousOperand = operate(operator, previousOperand, currentOperand);
         displayPreviousOperand.innerHTML = previousOperand;
+        displayPreviousOperand.innerHTML += operator;
         operator = btn.innerHTML;
         currentOperand = null;
         displayCurrentOperand.innerHTML = '';
