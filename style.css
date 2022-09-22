@@ -43,9 +43,16 @@ body {
     grid-row: span 2;
 }
 
-.clear {
+button.clear {
     grid-column: span 3;
+    background-color: rgb(119, 21, 21);
+    color: darkgrey;
 }
+
+button.operator, button.equals {
+    background-color: orangered;
+}
+
 
 .display{
     grid-column: 1 / -1;
