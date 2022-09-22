@@ -11,6 +11,7 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+    if(b === 0) return 'How dare you?!';
     return a / b;
 }
 
@@ -31,9 +32,9 @@ const btnOperators = document.querySelectorAll('.operator');
 const btnEquals = document.querySelector('.equals');
 const btnClear = document.querySelector('.clear');
 
-let currentOperand;
-let operator;
-let previousOperand;
+let currentOperand = null;
+let operator = null;
+let previousOperand = null;
 
 btnClear.addEventListener('click', () => {
     displayCurrentOperand.innerHTML = '';
@@ -51,6 +52,27 @@ btnNumbers.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 btnOperators.forEach(btn => btn.addEventListener('click', () => {
+
+    if(currentOperand === null && previousOperand === null && operator === null) return;
+
+    if(currentOperand === null) {
+        displayPreviousOperand.innerHTML = previousOperand;
+        operator = btn.innerHTML;
+        displayPreviousOperand.innerHTML += operator;
+        currentOperand = null;
+        displayCurrentOperand.innerHTML = '';
+        return;
+    }
+
+    if(operator !== null) {
+        previousOperand = operate(operator, previousOperand, currentOperand);
+        displayPreviousOperand.innerHTML = previousOperand;
+        operator = btn.innerHTML;
+        currentOperand = null;
+        displayCurrentOperand.innerHTML = '';
+        return;
+    }
+
     operator = btn.innerHTML;
     previousOperand = currentOperand;
     displayPreviousOperand.innerHTML += currentOperand;
@@ -60,6 +82,9 @@ btnOperators.forEach(btn => btn.addEventListener('click', () => {
 }));
 
 btnEquals.addEventListener('click', () => {
+    if(currentOperand === null || previousOperand === null || operator === null) return;
     displayCurrentOperand.innerHTML = operate(operator, previousOperand, currentOperand);
     displayPreviousOperand.innerHTML += currentOperand;
+    previousOperand = operate(operator, previousOperand, currentOperand);
+    currentOperand = null;
 })
