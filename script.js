@@ -24,6 +24,15 @@ function operate(operator, a, b) {
     }
 }
 
+function resetCalculator() {
+    displayCurrentOperand.innerHTML = '';
+    displayPreviousOperand.innerHTML = '';
+    currentOperand = null;
+    previousOperand = null;
+    operator = null;
+    equalsPressed = false;
+}
+
 const display = document.querySelector('.display');
 const displayCurrentOperand = document.querySelector('.current-operand');
 const displayPreviousOperand = document.querySelector('.prev-operand');
@@ -35,29 +44,31 @@ const btnClear = document.querySelector('.clear');
 let currentOperand = null;
 let operator = null;
 let previousOperand = null;
+let equalsPressed = false;
 
 btnClear.addEventListener('click', () => {
-    displayCurrentOperand.innerHTML = '';
-    displayPreviousOperand.innerHTML = '';
-    currentOperand = null;
-    previousOperand = null;
-    operator = null;
+    resetCalculator();
 });
 
 btnNumbers.forEach(btn => btn.addEventListener('click', () => {
     if(displayCurrentOperand.innerHTML === '0' && btn.innerHTML === '0') return;
     if(displayCurrentOperand.innerHTML === '0' && btn.innerHTML !== '0') displayCurrentOperand.innerHTML = '';
+    if(equalsPressed) {
+        resetCalculator();
+        displayCurrentOperand.innerHTML += btn.innerHTML;
+        currentOperand = parseInt(displayCurrentOperand.innerHTML);
+        return;
+    }
     displayCurrentOperand.innerHTML += btn.innerHTML;
     currentOperand = parseInt(displayCurrentOperand.innerHTML);
 }));
 
 btnOperators.forEach(btn => btn.addEventListener('click', () => {
-
+    if(equalsPressed) equalsPressed = false;
     if(currentOperand === null && previousOperand === null && operator === null) return;
-
     if(currentOperand === null) {
-        displayPreviousOperand.innerHTML = previousOperand;
         operator = btn.innerHTML;
+        displayPreviousOperand.innerHTML = previousOperand;
         displayPreviousOperand.innerHTML += operator;
         currentOperand = null;
         displayCurrentOperand.innerHTML = '';
@@ -88,4 +99,5 @@ btnEquals.addEventListener('click', () => {
     displayPreviousOperand.innerHTML += currentOperand;
     previousOperand = operate(operator, previousOperand, currentOperand);
     currentOperand = null;
+    equalsPressed = true;
 })
