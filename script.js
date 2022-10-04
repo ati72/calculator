@@ -33,6 +33,19 @@ function resetCalculator() {
     equalsPressed = false;
 }
 
+function inputNumber(number) {
+    displayCurrentOperand.innerHTML += number;    
+}
+
+function equalsFunction() {
+    if(currentOperand === null || previousOperand === null || operator === null) return;
+    displayCurrentOperand.innerHTML = operate(operator, previousOperand, currentOperand);
+    displayPreviousOperand.innerHTML += currentOperand;
+    previousOperand = operate(operator, previousOperand, currentOperand);
+    currentOperand = null;
+    equalsPressed = true;
+}
+
 const display = document.querySelector('.display');
 const displayCurrentOperand = document.querySelector('.current-operand');
 const displayPreviousOperand = document.querySelector('.prev-operand');
