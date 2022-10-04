@@ -34,7 +34,8 @@ function resetCalculator() {
 }
 
 function inputNumber(number) {
-    displayCurrentOperand.innerHTML += number;    
+    displayCurrentOperand.innerHTML += number;   
+    currentOperand = parseInt(displayCurrentOperand.innerHTML); 
 }
 
 function equalsFunction() {
@@ -44,6 +45,25 @@ function equalsFunction() {
     previousOperand = operate(operator, previousOperand, currentOperand);
     currentOperand = null;
     equalsPressed = true;
+}
+
+function operatorFunction(defaultMode, operatorChoice) {
+    if(defaultMode){
+        operator = operatorChoice;
+        previousOperand = currentOperand;
+        displayPreviousOperand.innerHTML += currentOperand;
+        displayPreviousOperand.innerHTML += operator;
+        currentOperand = null;
+        displayCurrentOperand.innerHTML = '';
+        return;
+    } else {
+        operator = operatorChoice;
+        displayPreviousOperand.innerHTML = previousOperand;
+        displayPreviousOperand.innerHTML += operator;
+        currentOperand = null;
+        displayCurrentOperand.innerHTML = '';
+        return;
+    }
 }
 
 const display = document.querySelector('.display');
@@ -59,58 +79,34 @@ let operator = null;
 let previousOperand = null;
 let equalsPressed = false;
 
-btnClear.addEventListener('click', () => {
-    resetCalculator();
-});
+
+
+btnClear.addEventListener('click', () => resetCalculator());
+btnEquals.addEventListener('click', () => equalsFunction());
 
 btnNumbers.forEach(btn => btn.addEventListener('click', () => {
     if(displayCurrentOperand.innerHTML === '0' && btn.innerHTML === '0') return;
     if(displayCurrentOperand.innerHTML === '0' && btn.innerHTML !== '0') displayCurrentOperand.innerHTML = '';
     if(equalsPressed) {
         resetCalculator();
-        displayCurrentOperand.innerHTML += btn.innerHTML;
-        currentOperand = parseInt(displayCurrentOperand.innerHTML);
+        inputNumber(btn.innerHTML);
         return;
     }
-    displayCurrentOperand.innerHTML += btn.innerHTML;
-    currentOperand = parseInt(displayCurrentOperand.innerHTML);
+    inputNumber(btn.innerHTML);
 }));
 
 btnOperators.forEach(btn => btn.addEventListener('click', () => {
     if(equalsPressed) equalsPressed = false;
     if(currentOperand === null && previousOperand === null && operator === null) return;
     if(currentOperand === null) {
-        operator = btn.innerHTML;
-        displayPreviousOperand.innerHTML = previousOperand;
-        displayPreviousOperand.innerHTML += operator;
-        currentOperand = null;
-        displayCurrentOperand.innerHTML = '';
+        operatorFunction(false, btn.innerHTML);
         return;
     }
 
     if(operator !== null) {
         previousOperand = operate(operator, previousOperand, currentOperand);
-        displayPreviousOperand.innerHTML = previousOperand;
-        displayPreviousOperand.innerHTML += operator;
-        operator = btn.innerHTML;
-        currentOperand = null;
-        displayCurrentOperand.innerHTML = '';
+        operatorFunction(false, btn.innerHTML);
         return;
     }
-
-    operator = btn.innerHTML;
-    previousOperand = currentOperand;
-    displayPreviousOperand.innerHTML += currentOperand;
-    displayPreviousOperand.innerHTML += operator;
-    currentOperand = null;
-    displayCurrentOperand.innerHTML = '';
+    operatorFunction(true, btn.innerHTML);
 }));
-
-btnEquals.addEventListener('click', () => {
-    if(currentOperand === null || previousOperand === null || operator === null) return;
-    displayCurrentOperand.innerHTML = operate(operator, previousOperand, currentOperand);
-    displayPreviousOperand.innerHTML += currentOperand;
-    previousOperand = operate(operator, previousOperand, currentOperand);
-    currentOperand = null;
-    equalsPressed = true;
-})
