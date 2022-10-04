@@ -1,3 +1,7 @@
+//****************
+//*   Functions  *
+//****************
+
 function add(a, b) {
     return a + b;
 }
@@ -66,6 +70,10 @@ function operatorFunction(defaultMode, operatorChoice) {
     }
 }
 
+//****************
+//*   Variables  *
+//****************
+
 const display = document.querySelector('.display');
 const displayCurrentOperand = document.querySelector('.current-operand');
 const displayPreviousOperand = document.querySelector('.prev-operand');
@@ -74,11 +82,16 @@ const btnOperators = document.querySelectorAll('.operator');
 const btnEquals = document.querySelector('.equals');
 const btnClear = document.querySelector('.clear');
 
+
 let currentOperand = null;
 let operator = null;
 let previousOperand = null;
 let equalsPressed = false;
 
+
+//******************
+//*  Button logic  *
+//******************
 
 
 btnClear.addEventListener('click', () => resetCalculator());
